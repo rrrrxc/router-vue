@@ -6,10 +6,12 @@
      <aside>
      <aside-cop></aside-cop>
      </aside>
-     <main>这是main</main>
+     <main>
+      <router-view></router-view>
+     </main>
    </div>
 
-   
+
   </div>
 </template>
 
