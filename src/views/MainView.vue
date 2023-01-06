@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-   <header>这是头部</header>
-
+   <header>
+    <header-cop></header-cop>
+   </header>
    <div class="body">
      <aside>
      <aside-cop></aside-cop>
@@ -17,11 +18,25 @@
 
 <script >
 import AsideCop from '@/components/AsideCop.vue'
-
+import HeaderCop from '@/components/HeaderCop.vue'
+// import {store} from '@/utils/store'
 export default {
   name : 'MainView',
   components :{
-  AsideCop
+  AsideCop,HeaderCop
+},
+props:['UserId'],
+
+// mounted () {
+//   console.log(this.$route.params)
+// }
+beforeRouteLeave (to, from, next) {
+  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+  if (answer) {
+    next()
+  } else {
+    next(false)
+  }
 }
 }
 </script>
@@ -34,14 +49,12 @@ export default {
   header {
     height :60px;
     background-color: black;
+    color:#fff;
   }
   aside {
     width :264px;
     height :100%;
-    ul {
-      height:100%;
-      overflow-y:auto;
-    }
+    
   }
   main{
     width:calc(100% - 264px);
