@@ -1,5 +1,5 @@
 <template>
-    <div class='default' ref="default">
+    <div class='default' ref="default"  @scroll="setButton($event,'哈哈哈')">
     <div ref="top">默认导航栏</div>
     <div style="height:1000px;background-color:grey"></div>
     <div v-show='needShow' class="back"><el-button type="primary"  @click="returnTop" >回顶部</el-button></div>
@@ -9,7 +9,8 @@
 <script>
 export default {
     mounted () {
-        this.$refs.default.addEventListener('scroll',this.setButton)
+        //原生的事件绑定
+        // this.$refs.default.addEventListener('scroll',this.setButton)
     },
     name : 'DefaultTab',
     data : function () {
@@ -23,17 +24,21 @@ export default {
                 behavior:'smooth'
             });
         },
-        setButton () {
+        setButton (e,name) {
+            console.log(e,name)
             //可优化
-            // if (this.$refs.default.scrollTop > 0) {
-            //     this.needShow = true;
-            // } else {
-            //     this.needShow = false;
-            // } 
+            if (e.target.scrollTop > 0) {
+                this.needShow = true;
+            } else {
+                this.needShow = false;
+            } 
             // 和上面的逻辑等价
-            this.needShow = this.$refs.default.scrollTop ;
+            // this.needShow = this.$refs.default.scrollTop ;
         }
         
+    },
+    destroyed() {
+        // this.$refs.default.removeEventListener('scroll',this.setButton)
     }
 }
 </script>
