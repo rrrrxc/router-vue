@@ -7,8 +7,11 @@
     <div class="body">
         <tab-body>
             <h1>匿名插槽</h1>
-            <template v-slot:header>
-                <h1 >具名插槽</h1>
+            <!-- <template v-slot:header="slotProp">
+                <h1 >具名插槽{{ slotProp.user.name }}</h1>
+            </template> -->
+            <template v-slot:header="{ user }">
+                <h1 >具名插槽{{ user.name }}</h1>
             </template>
         </tab-body>
     </div>
