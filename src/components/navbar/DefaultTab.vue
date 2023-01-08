@@ -1,21 +1,38 @@
 <template>
     <div class='default' ref="default"  @scroll="setButton($event,'哈哈哈')">
-    <div ref="top">默认导航栏</div>
-    <div style="height:1000px;background-color:grey"></div>
+    <div ref="top">
+        <tab-header :title="msg" color="red"/>
+        <tab-header title="这是第二个父亲传递的" color="green"/>
+    </div>
+    <div class="body">
+        <tab-body>
+            <h1>匿名插槽</h1>
+            <template v-slot:header>
+                <h1 >具名插槽</h1>
+            </template>
+        </tab-body>
+    </div>
     <div v-show='needShow' class="back"><el-button type="primary"  @click="returnTop" >回顶部</el-button></div>
     </div>
 </template>
 
 <script>
+import TabHeader from './TabHeader.vue'
+import TabBody from './TabBody.vue';
 export default {
     mounted () {
         //原生的事件绑定
         // this.$refs.default.addEventListener('scroll',this.setButton)
     },
+    components : {
+        TabHeader,
+        TabBody
+    },
     name : 'DefaultTab',
     data : function () {
         return {
             needShow :false,
+            msg : '我来设置子组件头部'
         }
     },
     methods : {
