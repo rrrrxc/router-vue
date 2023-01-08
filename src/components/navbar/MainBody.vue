@@ -1,18 +1,23 @@
 <template>
     <div class="container">
-        <!-- <el-table :data="tableData1" style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-        </el-table> -->
 
-        <el-table  stripe :data="tableData2">
-            <el-table-column prop="property" label="今日属性">
+        <div>
+            <el-input v-model="city"/>
+            <el-button @click="getWeather">查询</el-button>
+        </div>
+        
+        <el-table  stripe :data="tableData">
+            <el-table-column prop="name" label="天气条目">
             </el-table-column>
+
+            <el-table-column prop="property" label="key值">
+            </el-table-column>
+
             <el-table-column prop="value" label="现状">
+                <template v-slot:default="scoped">
+                    <img :src="scoped.row.value" v-if="scoped.row.property === 'img' "/>
+                    <div v-else> {{ scoped.row.value  }} </div>
+                </template>
             </el-table-column>
         </el-table>
 
@@ -20,24 +25,47 @@
 </template>
 
 <script>
+import { http } from '@/utils/http'
+const keyMap = {
+    img: '天气图片',
+    city:'城市',
+    cityid:'城市ID',
+    citycode:'城市代码',
+    date:'日期',
+    humidity:'湿度',
+}
 export default {
     name: 'MainBody',
     data: function () {
         return {
-            // tableData1: 
-            // [
-            //     { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄' },
-            //     {date: '2016-05-04',name: '王小虎',address: '上海市普陀区金沙江路 1517 弄'}, 
-            //     {date: '2016-05-01',name: '王小虎',address: '上海市普陀区金沙江路 1519 弄'}, 
-            //     {date: '2016-05-03',name: '王小虎',address: '上海市普陀区金沙江路 1516 弄'}
-            // ],
-            tableData2:
+            tableData:
             [
-                {property:'天气情况',value:'🌧'},
-                {property:'今日温度',value:'10℃'},
-                {property:'明天温度',value:'30℃'},
-                {property:'穿什么',value:'短袖'}
-            ]
+             
+            ],
+            city:''
+        }
+    },
+    mounted () {
+    //    this.getWeather()
+    },
+    methods : {
+        view (scoped) {
+            console.log(scoped);
+            return '666'
+        },
+        async getWeather () {
+            //黑名单数组
+            const removeKey = ['index','aqi','daily','hourly','week','weather','temp','temphigh','templow']
+            const { data }= await http.get('/weather/query', {params : {city: this.city}})
+            console.log(data.result)
+            Object.entries(data.result).forEach(([key,value]) => {
+                console.log(key,value)
+                //筛选
+                if(!removeKey.includes(key))
+                {
+                    this.tableData.push({property:key , value:value,name:keyMap[key]})
+                }
+            })
         }
     }
 }
