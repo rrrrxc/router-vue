@@ -1,35 +1,49 @@
 <template>
     <div class='default' ref="default"  @scroll="setButton($event,'哈哈哈')">
+
     <div ref="top">
-        <tab-header :title="msg" color="red"/>
-        <tab-header title="这是第二个父亲传递的" color="green"/>
+        <main-title>
+            今日天气
+            <template v-slot:sub>
+                人望山，鱼窥荷，真正想要的东西早已失去
+            </template>
+        </main-title>
+        <!-- <tab-header :title="msg" color="red"/>
+        <tab-header title="这是第二个父亲传递的" color="green"/> -->
     </div>
+
     <div class="body">
-        <tab-body>
+        <main-body></main-body>
+        <!-- <tab-body>
             <h1>匿名插槽</h1>
-            <!-- <template v-slot:header="slotProp">
+            <template v-slot:header="slotProp">
                 <h1 >具名插槽{{ slotProp.user.name }}</h1>
-            </template> -->
+            </template>
             <template v-slot:header="{ user }">
                 <h1 >具名插槽{{ user.name }}</h1>
             </template>
-        </tab-body>
+        </tab-body> -->
     </div>
+
     <div v-show='needShow' class="back"><el-button type="primary"  @click="returnTop" >回顶部</el-button></div>
+
     </div>
 </template>
 
 <script>
-import TabHeader from './TabHeader.vue'
-import TabBody from './TabBody.vue';
+import MainTitle from './MainTitle.vue';
+import MainBody from './MainBody.vue';
+// import TabHeader from './TabHeader.vue'
+// import TabBody from './TabBody.vue';
 export default {
     mounted () {
         //原生的事件绑定
         // this.$refs.default.addEventListener('scroll',this.setButton)
     },
     components : {
-        TabHeader,
-        TabBody
+        MainTitle,MainBody
+        // TabHeader,
+        // TabBody
     },
     name : 'DefaultTab',
     data : function () {
@@ -67,6 +81,7 @@ export default {
 .default {
     height: 100%;
     overflow-y: auto;
+    padding: 0 20px;
 }
 .back {
     position: fixed;//相对窗口定位
