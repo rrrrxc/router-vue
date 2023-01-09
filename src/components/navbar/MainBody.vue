@@ -3,17 +3,17 @@
 
         <div>
             <el-input v-model="city"/>
-            <el-button @click="getWeather">查询</el-button>
+            <el-button @click="getWeather">{{$t('msg.search')}}</el-button>
         </div>
         
         <el-table  stripe :data="tableData">
-            <el-table-column prop="name" label="天气条目">
+            <el-table-column prop="name" :label="$t('msg.weatherItem')">
             </el-table-column>
 
-            <el-table-column prop="property" label="key值">
+            <el-table-column prop="property" :label="$t('msg.key')">
             </el-table-column>
 
-            <el-table-column prop="value" label="现状">
+            <el-table-column prop="value" :label="$t('msg.current')">
                 <template v-slot:default="scoped">
                     <img  :src="imgFormatByPublic(scoped.row.value)" v-if="scoped.row.property === 'img' "/>
                     <div v-else> {{ scoped.row.value  }} </div>

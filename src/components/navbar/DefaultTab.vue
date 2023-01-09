@@ -3,9 +3,9 @@
 
     <div ref="top">
         <main-title>
-            今日天气
+            {{$t('msg.todayWeather')}}
             <template v-slot:sub>
-                人望山，鱼窥荷，真正想要的东西早已失去
+                {{$t('msg.subMsg')}}
             </template>
         </main-title>
         <!-- <tab-header :title="msg" color="red"/>
