@@ -11,15 +11,18 @@
       <div class="login">
         <div class="login-wrapper">
           <el-form :model="form" label-width="80px">
-            <el-form-item label="用户名：">
+            <el-form-item :label="$t('msg.name')">
               <el-input v-model="form.name" ></el-input>
             </el-form-item>
-            <el-form-item label="密码：">
+            <el-form-item :label="$t('msg.email')">
+              <el-input v-model="form.email" ></el-input>
+            </el-form-item>
+            <el-form-item :label="$t('msg.passwd')">
               <el-input v-model="form.passwd" show-password></el-input>
             </el-form-item>
           </el-form>
           <div class="operator">
-            <el-button size="small" @click="login">登录</el-button>
+            <el-button size="small" @click="login" :disabled="canLogin">{{$t("msg.login") }}</el-button>
           </div>
         </div>
       </div>
@@ -28,9 +31,22 @@
 </template>
 
 <script>
+ import {getToken} from '@/utils/store'
 
 export default {
-
+  computed : {
+    canLogin() {
+      const {name,email,passwd} = this.form;
+      return  !(name && email && passwd)
+      // if (this.form.name && this.form.email && this.form.passwd)
+      // {
+      //   return false;
+      // }
+      // else{
+      //    return true;
+      // }
+    }
+  },
   // 预定义属性
   name: 'HomeView',
   // 组件当中所有的响应式数据
@@ -38,6 +54,7 @@ export default {
     return {
       form: {
         name: '',
+        email:'',
         passwd: '',
       },
       isShowChild: true,
@@ -46,9 +63,13 @@ export default {
   },
   // 方法
   methods: {
-    login () {
+    async login () {
+      //TODO：网络请求
+    const token = await getToken()
+    sessionStorage.setItem('token',token)//数据存入浏览器
       //TODO:跳转至主页面
-      this.$router.push({path : 'main'})
+      this.$router.push({path : `main/${this.form.name}`,query:{email:this.form.email}})
+      
     }
   },
 }
