@@ -15,7 +15,7 @@
 
             <el-table-column prop="value" label="现状">
                 <template v-slot:default="scoped">
-                    <img :src="scoped.row.value" v-if="scoped.row.property === 'img' "/>
+                    <img  :src="imgFormatByPublic(scoped.row.value)" v-if="scoped.row.property === 'img' "/>
                     <div v-else> {{ scoped.row.value  }} </div>
                 </template>
             </el-table-column>
@@ -42,13 +42,20 @@ export default {
             [
              
             ],
-            city:''
+            city:'',
+            imgUrl:require('@/assets/weather-Icon/1.png'),
         }
     },
     mounted () {
     //    this.getWeather()
     },
     methods : {
+        imgFormat (imgNum) {
+            return require(`@/assets/weather-Icon/${imgNum}.png`)
+        },
+        imgFormatByPublic(imgNum) {
+            return `/weather-Icon/${imgNum}.png`
+        },
         view (scoped) {
             console.log(scoped);
             return '666'
@@ -58,14 +65,16 @@ export default {
             const removeKey = ['index','aqi','daily','hourly','week','weather','temp','temphigh','templow']
             const { data }= await http.get('/weather/query', {params : {city: this.city}})
             console.log(data.result)
+            const tmp = []
             Object.entries(data.result).forEach(([key,value]) => {
                 console.log(key,value)
                 //筛选
                 if(!removeKey.includes(key))
                 {
-                    this.tableData.push({property:key , value:value,name:keyMap[key]})
+                    tmp.push({property:key , value:value,name:keyMap[key]})
                 }
             })
+            this.tableData = tmp;
         }
     }
 }
