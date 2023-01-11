@@ -23,21 +23,33 @@
           <div class="operator">
             <el-button size="small" @click="login" :disabled="canLogin">{{ $t("msg.login") }}</el-button>
 
+            <!-- 语言选择器 -->
             <el-select v-model="selectedLang" placeholder="请选择语言" @change="changeLang">
-              <el-option v-for="(lang, index) in langArr" :label="lang.label" :value="lang.value" :key="index"></el-option>
+              <el-option v-for="(lang, index) in langArr" :label="lang.label" :value="lang.value"
+                :key="index"></el-option>
               <!-- <el-option  label="中文站" value="zh"></el-option> -->
               <!-- <el-option  label="英文站" value="en"></el-option> -->
             </el-select>
+
+            <!-- 日期选择器 -->
+            <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间">
+            </el-date-picker>
+
+            <!-- <el-input v-model="globalData.token"></el-input> -->
+            <!-- {{ globalData.getter('token') }} -->
+
+
+          </div>
 
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { getToken } from '@/utils/store'
+import {state} from '@/store/index'
 
 export default {
   computed: {
@@ -63,21 +75,31 @@ export default {
         email: '',
         passwd: '',
       },
+      date:'',
       isShowChild: true,
       pInfo: '这是用来设置默认的input框的值',
       langArr: [
         { label: '中文站', value: 'zh' },
         { label: '英文站', value: 'en' }
       ],
-      selectedLang:''
+      selectedLang: '',
+      globalData: state
     }
   },
+
+  // mounted() {
+  //   this.globalData.store = {
+  //     token :'6666'
+  //   };
+  //   setTimeout( () =>this.globalData.commit('token','vuex','HomeView'),4000)
+  // },
   // 方法
   methods: {
+    // TODO: 更改国际化语言
     changeLang(lang) {
       console.log(this.$i18n.locale, this.$root.$i18n.locale)
       this.$root.$i18n.locale = lang
-      // TODO: 更改国际化语言
+
     },
     async login() {
       //TODO：网络请求

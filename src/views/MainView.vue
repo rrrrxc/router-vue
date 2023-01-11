@@ -19,6 +19,7 @@
 <script >
 import AsideCop from '@/components/AsideCop.vue'
 import HeaderCop from '@/components/HeaderCop.vue'
+
 // import {store} from '@/utils/store'
 export default {
   name : 'MainView',
@@ -30,8 +31,8 @@ props:['UserId'],
 // mounted () {
 //   console.log(this.$route.params)
 // }
-beforeRouteLeave (to, from, next) {
-  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+beforeRouteLeave (to, from, next) {//组件离开守卫
+  const answer = window.confirm('是否确定离开此页面')
   if (answer) {
     next()
   } else {
@@ -41,7 +42,7 @@ beforeRouteLeave (to, from, next) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .container {
   height: 100vh;
@@ -63,7 +64,7 @@ beforeRouteLeave (to, from, next) {
   }
   .body {
     height :calc(100% - 60px);//两个数值之间有空格
-    display:flex
+    display:flex;
   }
 
 </style>
